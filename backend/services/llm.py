@@ -13,7 +13,7 @@ class TopicItem(BaseModel):
     """A single topic extracted from course content."""
     topic: str = Field(description="Clear topic name, 3-8 words")
     description: str = Field(description="Brief description of what will be learned, 1-2 sentences")
-    estimatedHours: float = Field(default=2.0, description="Estimated hours to learn this topic")
+    estimatedHours: float = Field(description="Estimated hours to learn this topic")
 
 
 class TopicList(BaseModel):
