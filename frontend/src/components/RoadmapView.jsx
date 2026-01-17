@@ -27,6 +27,73 @@ function RoadmapView({ data, progress, toggleComplete, onReset, progressPercent,
         toggleComplete(topicId)
     }
 
+    const handleExport = () => {
+        import('jspdf').then(({ jsPDF }) => {
+            const doc = new jsPDF()
+
+            // Title
+            doc.setFontSize(22)
+            doc.setTextColor(217, 119, 6) // Amber-600
+            doc.text(course.title, 20, 20)
+
+            doc.setFontSize(12)
+            doc.setTextColor(100)
+            doc.text(`Platform: ${course.platform}`, 20, 30)
+            doc.line(20, 35, 190, 35)
+
+            let y = 45
+
+            roadmap.forEach((topic, i) => {
+                // Add new page if logic requires (simple check)
+                if (y > 250) {
+                    doc.addPage()
+                    y = 20
+                }
+
+                // Topic Header
+                doc.setFontSize(16)
+                doc.setTextColor(0)
+                doc.text(`${i + 1}. ${topic.topic}`, 20, y)
+                y += 10
+
+                // Status
+                const isCompleted = progress[topic.id]?.completed
+                doc.setFontSize(10)
+                doc.setTextColor(isCompleted ? 16 : 100, isCompleted ? 185 : 100, isCompleted ? 129 : 100)
+                doc.text(`Status: ${isCompleted ? 'Completed' : 'Pending'}`, 25, y)
+                y += 8
+
+                // Video
+                if (topic.videos && topic.videos[0]) {
+                    const vid = topic.videos[0]
+                    doc.setTextColor(50)
+                    doc.text(`Video: ${vid.title}`, 25, y)
+                    y += 6
+                    doc.setTextColor(37, 99, 235) // Blue link
+                    doc.textWithLink('Watch on YouTube', 25, y, { url: vid.url })
+                    y += 10
+                }
+
+                // Docs
+                if (topic.documentation && topic.documentation.length > 0) {
+                    topic.documentation.slice(0, 2).forEach(d => {
+                        doc.setTextColor(50)
+                        doc.text(`Doc: ${d.title}`, 25, y)
+                        y += 6
+                        doc.setTextColor(37, 99, 235) // Blue link
+                        doc.textWithLink('Read Documentation', 25, y, { url: d.url })
+                        y += 8
+                    })
+                    y += 4
+                }
+
+                y += 10 // Spacing between topics
+            })
+
+            doc.save(`${course.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`)
+        })
+    }
+
     return (
         <div className="roadmap-container">
             {/* Celebration Confetti */}
@@ -55,13 +122,22 @@ function RoadmapView({ data, progress, toggleComplete, onReset, progressPercent,
 
             {/* Clean Minimal Header */}
             <header className="roadmap-header">
-                <button className="back-btn" onClick={onReset}>
-                    ← New Roadmap
-                </button>
+                <div className="header-left">
+                    <button className="back-btn" onClick={onReset}>
+                        ← New
+                    </button>
+                    <div className="action-buttons">
+                        <button className="icon-btn" onClick={handleExport} title="Export to PDF">
+                            📤 PDF
+                        </button>
+                    </div>
+                </div>
 
                 <div className="header-info">
                     <h1 className="course-title">{course.title}</h1>
-                    <span className="platform-badge">{course.platform}</span>
+                    <div className="header-badges">
+                        <span className="platform-badge">{course.platform}</span>
+                    </div>
                 </div>
             </header>
 

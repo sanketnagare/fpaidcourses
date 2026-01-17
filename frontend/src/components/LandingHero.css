@@ -75,11 +75,32 @@
 }
 
 /* ===== Tagline ===== */
+/* ===== Tagline ===== */
+.tagline-container {
+    min-height: 100px;
+    /* Reserve space to prevent layout shift */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
 .tagline {
     font-size: 22px;
     color: var(--text-secondary);
-    margin-bottom: 40px;
     line-height: 1.6;
+    margin: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.tagline.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tagline.fade-out {
+    opacity: 0;
+    transform: translateY(10px);
 }
 
 /* ===== URL Form ===== */

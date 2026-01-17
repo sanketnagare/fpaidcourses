@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import './LandingHero.css'
 
 function LandingHero({
@@ -11,6 +12,36 @@ function LandingHero({
     onClearHistory,
     getHistoryProgress
 }) {
+    const [taglineIndex, setTaglineIndex] = useState(0)
+    const [fade, setFade] = useState(true)
+
+    const taglines = [
+        {
+            main: "The World's Best Teachers Aren't Selling Courses.",
+            sub: <>They're sharing knowledge for free. We curate the global top 1% of community tutorials so you <span className="highlight">learn from masters, not merchants</span>.</>
+        },
+        {
+            main: "Don't Settle for One Instructor.",
+            sub: <>Paid courses force you to stick with one teacher. We pick the <span className="highlight">single best video for each topic</span> from the entire internet.</>
+        },
+        {
+            main: "Stop Confusing 'Price' with 'Value'.",
+            sub: <>You're paying for the roadmap, not the video. We give you the same roadmap, but fill it with <span className="highlight">higher-rated, free content</span>.</>
+        }
+    ]
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setFade(false)
+            setTimeout(() => {
+                setTaglineIndex((prev) => (prev + 1) % taglines.length)
+                setFade(true)
+            }, 500) // Half of the transition time
+        }, 8000)
+
+        return () => clearInterval(interval)
+    }, [])
+
     const formatDate = (dateString) => {
         const date = new Date(dateString)
         const now = new Date()
@@ -41,10 +72,14 @@ function LandingHero({
                 </div>
 
                 {/* Tagline */}
-                <p className="tagline animate-fade-in" style={{ animationDelay: '0.1s' }}>
-                    Transform any paid course into a <span className="gradient-text">free learning roadmap</span>
-                    <br />with curated YouTube videos and documentation
-                </p>
+                {/* Tagline */}
+                <div className="tagline-container">
+                    <p className={`tagline ${fade ? 'fade-in' : 'fade-out'}`}>
+                        <span className="gradient-text">{taglines[taglineIndex].main}</span>
+                        <br />
+                        {taglines[taglineIndex].sub}
+                    </p>
+                </div>
 
                 {/* URL Input Form */}
                 <form onSubmit={onSubmit} className="url-form animate-fade-in" style={{ animationDelay: '0.2s' }}>
@@ -136,14 +171,14 @@ function LandingHero({
                         <div className="step-card">
                             <div className="step-number">2</div>
                             <div className="step-icon">🤖</div>
-                            <h3>AI Analysis</h3>
-                            <p>Our AI extracts the curriculum and identifies key learning topics</p>
+                            <h3>AI Curation</h3>
+                            <p>We instantly find the absolute best free resources for every single topic</p>
                         </div>
                         <div className="step-card">
                             <div className="step-number">3</div>
                             <div className="step-icon">🎯</div>
-                            <h3>Get Roadmap</h3>
-                            <p>Receive a structured path with free videos and documentation</p>
+                            <h3>Start Learning</h3>
+                            <p>Launch your custom roadmap immediately – no signups, no payments</p>
                         </div>
                     </div>
                 </div>
@@ -155,43 +190,43 @@ function LandingHero({
                         <div className="benefit-item">
                             <div className="benefit-icon">💰</div>
                             <div className="benefit-content">
-                                <h4>Save Hundreds of Dollars</h4>
-                                <p>Stop paying $100-$200 for courses when quality free content exists</p>
+                                <h4>Keep Your Money</h4>
+                                <p>Why pay $100+ for organized links? We organize the best free content for you.</p>
                             </div>
                         </div>
                         <div className="benefit-item">
                             <div className="benefit-icon">📺</div>
                             <div className="benefit-content">
-                                <h4>Best YouTube Videos</h4>
-                                <p>We find the most-viewed, highest-quality tutorials for each topic</p>
+                                <h4>Better Than Paid</h4>
+                                <p>Paid courses get outdated. We curate the latest, highest-rated YouTube tutorials.</p>
                             </div>
                         </div>
                         <div className="benefit-item">
                             <div className="benefit-icon">📚</div>
                             <div className="benefit-content">
                                 <h4>Official Documentation</h4>
-                                <p>Learn from official docs, MDN, Real Python, and trusted sources</p>
+                                <p>Learn from official and up-to-date documentation, not just videos.</p>
                             </div>
                         </div>
                         <div className="benefit-item">
                             <div className="benefit-icon">🎮</div>
                             <div className="benefit-content">
                                 <h4>Track Your Progress</h4>
-                                <p>Gamified learning path with milestones - mark topics as you go</p>
+                                <p>Gamified learning path with milestones - mark topics as you go.</p>
                             </div>
                         </div>
                         <div className="benefit-item">
                             <div className="benefit-icon">💾</div>
                             <div className="benefit-content">
                                 <h4>Saves Locally</h4>
-                                <p>Your progress is saved in browser - come back anytime</p>
+                                <p>Your progress is saved in your browser - come back and resume anytime.</p>
                             </div>
                         </div>
                         <div className="benefit-item">
                             <div className="benefit-icon">⚡</div>
                             <div className="benefit-content">
                                 <h4>Powered by AI</h4>
-                                <p>Google Gemini AI understands course structure intelligently</p>
+                                <p>Advanced AI analyzes the course URL to build a perfect curriculum.</p>
                             </div>
                         </div>
                     </div>

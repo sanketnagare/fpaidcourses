@@ -26,7 +26,32 @@ function App() {
                 console.error('Failed to parse history:', e)
             }
         }
+
+        // Check for shared URL
+        const params = new URLSearchParams(window.location.search)
+        const courseUrl = params.get('course')
+        if (courseUrl) {
+            setUrl(courseUrl)
+            handleGenerate(courseUrl)
+        }
     }, [])
+
+    const handleGenerate = async (courseUrl) => {
+        setLoading(true)
+        setError(null)
+
+        try {
+            const data = await generateRoadmap(courseUrl)
+            setRoadmapData(data)
+            saveToHistory(data)
+            // Clean URL without refresh
+            window.history.replaceState({}, '', window.location.pathname)
+        } catch (err) {
+            setError(err.message || 'Failed to generate roadmap from shared link')
+        } finally {
+            setLoading(false)
+        }
+    }
 
     // Load progress from localStorage
     useEffect(() => {
