@@ -68,15 +68,28 @@ Course content to analyze:
         try:
             # Generate response with structured output using new SDK
             # Using gemini-2.5-flash-lite for better quota availability
-            response = self.client.models.generate_content(
-                model='gemini-2.5-flash-lite',
-                contents=prompt,
-                config={
-                    'response_mime_type': 'application/json',
-                    'response_schema': TopicList,
-                    'temperature': 0.3,
-                },
-            )
+            # Added retry logic for 503 errors
+            max_retries = 3
+            for attempt in range(max_retries):
+                try:
+                    response = self.client.models.generate_content(
+                        model='gemini-2.5-flash-lite',
+                        contents=prompt,
+                        config={
+                            'response_mime_type': 'application/json',
+                            'response_schema': TopicList,
+                            'temperature': 0.3,
+                        },
+                    )
+                    break
+                except Exception as e:
+                    if "503" in str(e) and attempt < max_retries - 1:
+                        import time
+                        wait_time = 2 ** attempt  # Exponential backoff: 1s, 2s, 4s...
+                        print(f"Gemini 503 error, retrying in {wait_time}s...")
+                        time.sleep(wait_time)
+                        continue
+                    raise e
             
             # Parse the structured response
             if response.parsed:
