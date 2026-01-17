@@ -38,8 +38,8 @@ class Topic(BaseModel):
     topic: str
     description: str
     estimatedHours: Optional[float] = None
-    videos: list[Video] = []
-    documentation: list[Documentation] = []
+    videos: list[Video]
+    documentation: list[Documentation]
 
 
 class CourseInfo(BaseModel):
