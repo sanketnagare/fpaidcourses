@@ -1,0 +1,21 @@
+# Backend Dependencies for FuckPaidCourses
+
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+python-dotenv==1.0.0
+
+# Scraping
+firecrawl-py==0.0.16
+
+# LLM - New Google GenAI SDK
+google-genai
+
+# YouTube search (no API key needed!)
+yt-dlp
+
+# HTTP requests for Serper
+httpx==0.26.0
+
+# CORS
+python-multipart==0.0.6

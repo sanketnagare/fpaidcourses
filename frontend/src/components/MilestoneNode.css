@@ -1,0 +1,393 @@
+.milestone-row {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    padding: 20px 0;
+}
+
+.milestone-row.left {
+    justify-content: flex-start;
+    padding-left: 50px;
+}
+
+.milestone-row.right {
+    justify-content: flex-end;
+    padding-right: 50px;
+}
+
+/* ===== Connection Line ===== */
+.connection-line {
+    position: absolute;
+    width: 4px;
+    height: 60px;
+    background: var(--border-color);
+    left: 50%;
+    top: -30px;
+    transform: translateX(-50%);
+    transition: background 0.3s ease;
+}
+
+.connection-line.completed {
+    background: var(--accent-gradient);
+}
+
+/* ===== Milestone Node ===== */
+.milestone-node {
+    display: flex;
+    gap: 20px;
+    max-width: 600px;
+    cursor: pointer;
+    animation: slideIn 0.5s ease forwards;
+    opacity: 0;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.milestone-row:nth-child(1) .milestone-node {
+    animation-delay: 0s;
+}
+
+.milestone-row:nth-child(2) .milestone-node {
+    animation-delay: 0.1s;
+}
+
+.milestone-row:nth-child(3) .milestone-node {
+    animation-delay: 0.2s;
+}
+
+.milestone-row:nth-child(4) .milestone-node {
+    animation-delay: 0.3s;
+}
+
+.milestone-row:nth-child(5) .milestone-node {
+    animation-delay: 0.4s;
+}
+
+.milestone-row:nth-child(n+6) .milestone-node {
+    animation-delay: 0.5s;
+}
+
+.milestone-row.left .milestone-node {
+    flex-direction: row;
+}
+
+.milestone-row.right .milestone-node {
+    flex-direction: row-reverse;
+}
+
+/* ===== Node Circle ===== */
+.node-circle {
+    position: relative;
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-card);
+    border: 3px solid var(--border-color);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.milestone-node:hover .node-circle {
+    transform: scale(1.1);
+    border-color: var(--accent-primary);
+}
+
+.milestone-node.completed .node-circle {
+    background: var(--accent-gradient);
+    border-color: transparent;
+    color: white;
+}
+
+.milestone-node.current .node-circle {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.milestone-node.locked .node-circle {
+    opacity: 0.5;
+}
+
+.node-number {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+/* Pulse Ring */
+.pulse-ring {
+    position: absolute;
+    inset: -8px;
+    border: 2px solid var(--accent-primary);
+    border-radius: 50%;
+    animation: pulse-ring 2s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Completion Burst */
+.completion-burst {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.completion-burst span {
+    position: absolute;
+    font-size: 24px;
+    animation: burst 1s ease-out forwards;
+}
+
+.completion-burst span:nth-child(1) {
+    animation-delay: 0s;
+    transform: rotate(0deg);
+}
+
+.completion-burst span:nth-child(2) {
+    animation-delay: 0.1s;
+    transform: rotate(90deg);
+}
+
+.completion-burst span:nth-child(3) {
+    animation-delay: 0.2s;
+    transform: rotate(180deg);
+}
+
+.completion-burst span:nth-child(4) {
+    animation-delay: 0.3s;
+    transform: rotate(270deg);
+}
+
+@keyframes burst {
+    0% {
+        transform: scale(0) translateX(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1) translateX(50px);
+        opacity: 0;
+    }
+}
+
+/* ===== Node Content ===== */
+.node-content {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.milestone-node:hover .node-content {
+    border-color: var(--accent-primary);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.milestone-node.completed .node-content {
+    border-color: var(--success);
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.milestone-node.current .node-content {
+    border-color: var(--accent-primary);
+    background: rgba(217, 119, 6, 0.05);
+}
+
+.milestone-node.locked .node-content {
+    opacity: 0.6;
+}
+
+/* Node Header */
+.node-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.node-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    flex: 1;
+}
+
+.completed-badge,
+.current-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.completed-badge {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--success);
+}
+
+.current-badge {
+    background: rgba(217, 119, 6, 0.2);
+    color: var(--accent-primary);
+    animation: pulse 2s infinite;
+}
+
+/* Node Description */
+.node-description {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+/* Node Meta */
+.node-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.meta-icon {
+    font-size: 14px;
+}
+
+/* Node Actions */
+.node-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.view-btn {
+    flex: 1;
+    padding: 10px 16px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.view-btn:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+    border-color: var(--accent-primary);
+}
+
+.complete-btn {
+    padding: 10px 20px;
+    background: var(--accent-gradient);
+    border: none;
+    border-radius: var(--radius-md);
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.complete-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.complete-btn.completed {
+    background: var(--success);
+}
+
+.complete-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Just Completed Animation */
+.milestone-row.just-completed .milestone-node {
+    animation: celebrate 0.5s ease;
+}
+
+@keyframes celebrate {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+
+    .milestone-row.left,
+    .milestone-row.right {
+        padding-left: 16px;
+        padding-right: 16px;
+        justify-content: center;
+    }
+
+    .milestone-row.left .milestone-node,
+    .milestone-row.right .milestone-node {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .node-content {
+        padding: 16px;
+    }
+
+    .node-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .node-meta {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .node-actions {
+        flex-direction: column;
+    }
+}
