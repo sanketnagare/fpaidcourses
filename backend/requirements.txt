@@ -11,8 +11,8 @@ firecrawl-py==0.0.16
 # LLM - New Google GenAI SDK
 google-genai
 
-# YouTube search
-pytubefix
+# YouTube search (Official API)
+google-api-python-client
 
 # HTTP requests for Serper
 httpx

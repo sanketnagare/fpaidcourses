@@ -17,6 +17,7 @@ class Settings:
     FIRECRAWL_API_KEY: str = os.getenv("FIRECRAWL_API_KEY", "")
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
     SERPER_API_KEY: str = os.getenv("SERPER_API_KEY", "")
+    YOUTUBE_API_KEY: str = os.getenv("YOUTUBE_API_KEY", "")
     
     # App settings
     DEBUG: bool = os.getenv("DEBUG", "false").lower() == "true"

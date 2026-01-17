@@ -130,6 +130,44 @@ class SearchService:
             "_priority": priority,
         }
 
+    def search_videos(self, query: str, num_results: int = 3) -> list[dict]:
+        """
+        Search for videos using Serper 'videos' search type.
+        
+        Args:
+            query: Video search query
+            num_results: Max results to return
+            
+        Returns:
+            List of video result dictionaries
+        """
+        if not self.api_key:
+            raise ValueError("Serper API key not configured")
+            
+        try:
+            response = httpx.post(
+                self.SERPER_API_URL,
+                headers={
+                    "X-API-KEY": self.api_key,
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "q": query,
+                    "type": "videos",
+                    "num": num_results,
+                    "engine": "google"
+                },
+                timeout=15.0,
+            )
+            response.raise_for_status()
+            
+            data = response.json()
+            return data.get("videos", [])
+            
+        except Exception as e:
+            print(f"Serper video search error: {e}")
+            return []
+
 
 # Singleton instance
 search_service = SearchService()
